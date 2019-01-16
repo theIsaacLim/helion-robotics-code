@@ -26,6 +26,7 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
   public static VictorSP rightGrabber = new VictorSP(0);
   public static Talon leftGrabber = new Talon(0);
+  public static Talon elevatorLargeMotor = new Talon(0);
   // The Potentiometer constructor takes 3 parameters: 
   // a channel number for the analog input, 
   // a scale factor to multiply the 0-1 ratiometric value by to return useful units, 

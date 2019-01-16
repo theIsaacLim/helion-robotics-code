@@ -9,9 +9,9 @@ package frc.robot.commands;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class Grabber extends Command {
+public class GrabberSucc extends Command {
   public static float motor_speed = 0;
-  public Grabber() {
+  public GrabberSucc() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
