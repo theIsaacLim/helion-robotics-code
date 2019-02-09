@@ -26,6 +26,7 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
   public static VictorSP rightGrabber = new VictorSP(0);
   public static Talon leftGrabber = new Talon(0);
+<<<<<<< HEAD
   public static Talon elevatorLargeMotor = new Talon(0);
   // The Potentiometer constructor takes 3 parameters: 
   // a channel number for the analog input, 
@@ -33,4 +34,17 @@ public class RobotMap {
   // and an offset to add after the scaling. 
   public static AnalogPotentiometer rightGrabberPot = new AnalogPotentiometer(1, 1, 1);
   public static AnalogPotentiometer leftGrabberPot = new AnalogPotentiometer(1, 1, 1);
+=======
+
+  // This part is wheely cool!
+  public static Talon frontLeftWheel = new Talon(1);
+  public static Talon frontRightWheel = new Talon(2);
+  public static Talon backLeftWheel = new Talon(3);
+  public static Talon backRightWheel = new Talon(4);
+  public static RobotDrive myDrive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
+
+  // Controller
+  public static Joystick leftJoy = new Joystick(0);
+  public static Joystick rightJoy = new Joystick(0);
+>>>>>>> 02d176920876ae5660695785cc910c2012e50131
 }
