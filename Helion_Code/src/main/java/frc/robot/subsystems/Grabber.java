@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Add your docs here.
  */
 public class Grabber extends Subsystem {
+  public void grabberSucc(){
+    
+  }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
