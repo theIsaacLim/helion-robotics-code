@@ -7,6 +7,7 @@ public class ElevatorUp extends Command {
     public ElevatorUp() {
       // Use requires() here to declare subsystem dependencies
       // eg. requires(chassis);
+      requires(Elevator.java)
     }
     // Called just before this Command runs the first time
     @Override
