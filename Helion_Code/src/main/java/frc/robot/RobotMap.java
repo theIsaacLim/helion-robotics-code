@@ -26,7 +26,7 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
   public static VictorSP rightGrabber = new VictorSP(0);
-  public static Talon leftGrabber = new Talon(0);
+  public static Talon leftGrabber = new Talon(4);
 
   // This part is wheely cool!
   public static Talon frontLeftWheel = new Talon(0);
@@ -39,5 +39,5 @@ public class RobotMap {
   public static DifferentialDrive secondDrive = new DifferentialDrive(left, right);
   // Controller
   public static Joystick leftJoy = new Joystick(0);
-  public static Joystick rightJoy = new Joystick(0);
+  // public static Joystick rightJoy = new Joystick(0);
 }
