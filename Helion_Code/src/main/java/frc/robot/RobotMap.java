@@ -25,7 +25,7 @@ public class RobotMap {
   // number and the module. For example you with a rangefinder:
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
-  public static VictorSP rightGrabber = new VictorSP(0);
+  public static VictorSP rightGrabber = new VictorSP(5);
   public static Talon leftGrabber = new Talon(4);
 
   // This part is wheely cool!
