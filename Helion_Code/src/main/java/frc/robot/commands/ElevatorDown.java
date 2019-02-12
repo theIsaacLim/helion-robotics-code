@@ -9,7 +9,8 @@ import frc.robot.Robot;
 public class ElevatorDown extends Command {
   public ElevatorDown() {
     // Use requires() here to declare subsystem dependencies
-    requires(Elevator.java);
+    
+    //requires(Elevator.java);
   }
 
   // Called just before this Command runs the first time

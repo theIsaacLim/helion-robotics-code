@@ -9,7 +9,8 @@ public class ElevatorUp extends Command {
     public ElevatorUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Elevator.java);
+        
+        //requires(Elevator.java);
     }
 
     // Called just before this Command runs the first time
@@ -20,7 +21,7 @@ public class ElevatorUp extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        RobotMap.elevatorLargeMotor.setSpeed(motor_speed);
+        //RobotMap.elevatorLargeMotor.setSpeed(motor_speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -32,7 +33,7 @@ public class ElevatorUp extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        RobotMap.elevatorLargeMotor.setSpeed(0);
+        //RobotMap.elevatorLargeMotor.setSpeed(0);
     }
 
     // Called when another command which requires one or more of the same
