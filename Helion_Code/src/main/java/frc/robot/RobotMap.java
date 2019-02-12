@@ -29,10 +29,10 @@ public class RobotMap {
   public static Talon leftGrabber = new Talon(0);
 
   // This part is wheely cool!
-  public static Talon frontLeftWheel = new Talon(1);
-  public static Talon frontRightWheel = new Talon(2);
-  public static Talon backLeftWheel = new Talon(3);
-  public static Talon backRightWheel = new Talon(4);
+  public static Talon frontLeftWheel = new Talon(0);
+  public static Talon frontRightWheel = new Talon(1);
+  public static Talon backLeftWheel = new Talon(2);
+  public static Talon backRightWheel = new Talon(3);
   public static SpeedControllerGroup left = new SpeedControllerGroup(frontLeftWheel, backLeftWheel);
   public static SpeedControllerGroup right = new SpeedControllerGroup(frontRightWheel, backRightWheel);
   //public static RobotDrive myDrive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);

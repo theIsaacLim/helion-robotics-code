@@ -129,6 +129,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     //RobotMap.myDrive.arcadeDrive(RobotMap.leftJoy.getY(),  RobotMap.rightJoy.getX());
-    RobotMap.secondDrive.arcadeDrive(RobotMap.leftJoy.getY(), RobotMap.rightJoy.getX());
+    RobotMap.secondDrive.arcadeDrive(-RobotMap.leftJoy.getY(), RobotMap.rightJoy.getX());
   }
 }
