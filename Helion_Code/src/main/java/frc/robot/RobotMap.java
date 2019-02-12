@@ -7,6 +7,7 @@
 
 package frc.robot;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -32,8 +33,10 @@ public class RobotMap {
   public static Talon frontRightWheel = new Talon(2);
   public static Talon backLeftWheel = new Talon(3);
   public static Talon backRightWheel = new Talon(4);
-  public static RobotDrive myDrive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
-
+  public static SpeedControllerGroup left = new SpeedControllerGroup(frontLeftWheel, backLeftWheel);
+  public static SpeedControllerGroup right = new SpeedControllerGroup(frontRightWheel, backRightWheel);
+  //public static RobotDrive myDrive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
+  public static DifferentialDrive secondDrive = new DifferentialDrive(left, right);
   // Controller
   public static Joystick leftJoy = new Joystick(0);
   public static Joystick rightJoy = new Joystick(0);
