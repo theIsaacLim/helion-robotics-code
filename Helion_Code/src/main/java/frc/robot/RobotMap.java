@@ -6,6 +6,9 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -16,26 +19,27 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * floating around.
  */
 public class RobotMap {
-  // For example to map the left and right motors, you could define the
-  // following variables to use with your drivetrain subsystem.
-  // public static int leftMotor = 1;
-  // public static int rightMotor = 2;
 
-  // If you are using multiple modules, make sure to define both the port
-  // number and the module. For example you with a rangefinder:
-  // public static int rangefinderPort = 1;
-  // public static int rangefinderModule = 1;
-  public static VictorSP rightGrabber = new VictorSP(5);
-  public static Talon leftGrabber = new Talon(4);
+  public static int frontLeftChannel = 0;
+  public static int backLeftChannel = 1;
+  public static int frontRightChannel = 2;
+  public static int backRightChannel = 3;
+
+  // public static VictorSP rightGrabber = new VictorSP(5);
+  // public static Talon leftGrabber = new Talon(4);
 
   // This part is wheely cool!
-  public static Talon frontLeftWheel = new Talon(0);
-  public static Talon frontRightWheel = new Talon(1);
-  public static Talon backLeftWheel = new Talon(2);
-  public static Talon backRightWheel = new Talon(3);
+  public static TalonSRX lf;
+
+  rf = new TalonSRX(RobotMap.frontRightChannel);
+  rb = new TalonSRX(RobotMap.backRightChannel);
+  lf = new TalonSRX(RobotMap.frontLeftChannel);
+  lb = new TalonSRX(RobotMap.backLeftChannel);
+
   public static SpeedControllerGroup left = new SpeedControllerGroup(frontLeftWheel, backLeftWheel);
   public static SpeedControllerGroup right = new SpeedControllerGroup(frontRightWheel, backRightWheel);
-  //public static RobotDrive myDrive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
+  // public static RobotDrive myDrive = new RobotDrive(frontLeftWheel,
+  // backLeftWheel, frontRightWheel, backRightWheel);
   public static DifferentialDrive secondDrive = new DifferentialDrive(left, right);
   // Controller
   public static Joystick leftJoy = new Joystick(0);
