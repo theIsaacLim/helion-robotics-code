@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 
 /**
  * This is a demo program showing the use of the RobotDrive class, specifically
@@ -22,26 +24,50 @@ import edu.wpi.first.wpilibj.DigitalInput;
  */
 public class Robot extends TimedRobot {
 
-  WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(RobotMap.flChannel);
-  WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(RobotMap.frChannel);
+  WPI_TalonSRX frontLeftMotor;
+  WPI_TalonSRX frontRightMotor;
 
-  WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(RobotMap.blChannel);
-  WPI_TalonSRX backRightMotor = new WPI_TalonSRX(RobotMap.brChannel);
+  WPI_TalonSRX backLeftMotor;
+  WPI_TalonSRX backRightMotor;
 
-  WPI_TalonSRX majorElevator = new WPI_TalonSRX(RobotMap.majElevatorChannel);
+  WPI_TalonSRX majorElevator;
 
-  private DifferentialDrive drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
-  private Joystick stick = new Joystick(RobotMap.joyChannel);
+  private DifferentialDrive drive;
+  private Joystick stick;
 
-  private double sensitivity = 0.5;
+  private double sensitivity;
 
-  private DigitalInput majElevatorTopSwitch = new DigitalInput(RobotMap.lSMajEleUp);
-  private DigitalInput majElevatorDownSwitch = new DigitalInput(RobotMap.lSMajEleDown);
+  private DigitalInput majElevatorTopSwitch;
+  private DigitalInput majElevatorDownSwitch;
 
-  private boolean topFirstHit = true;
+  private boolean topFirstHit;
+
+  private UsbCamera camera;
 
   @Override
   public void robotInit() {
+    frontLeftMotor = new WPI_TalonSRX(RobotMap.flChannel);
+    frontRightMotor = new WPI_TalonSRX(RobotMap.frChannel);
+
+    backLeftMotor = new WPI_TalonSRX(RobotMap.blChannel);
+    backRightMotor = new WPI_TalonSRX(RobotMap.brChannel);
+
+    majorElevator = new WPI_TalonSRX(RobotMap.majElevatorChannel);
+
+    drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
+
+    stick = new Joystick(RobotMap.joyChannel);
+
+    sensitivity = 0.5;
+
+    majElevatorTopSwitch = new DigitalInput(RobotMap.lSMajEleUp);
+    majElevatorDownSwitch = new DigitalInput(RobotMap.lSMajEleDown);
+
+    topFirstHit = true;
+
+    camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(640, 480);
+    camera.setFPS(15);
   }
 
   @Override
