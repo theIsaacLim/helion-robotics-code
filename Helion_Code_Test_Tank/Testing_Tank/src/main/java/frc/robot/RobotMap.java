@@ -9,4 +9,9 @@ public class RobotMap{
     public static int majElevatorChannel = 4;
 
     public static int joyChannel = 0;
+    public static int joyMajorElevatorUp = 5;
+    public static int joyMajorElevatorDown = 3;
+
+    public static int lSMajEleUp = 0;
+    public static int lSMajEleDown = 1;
 }

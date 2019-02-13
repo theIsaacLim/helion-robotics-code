@@ -14,6 +14,7 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * This is a demo program showing the use of the RobotDrive class, specifically
@@ -34,12 +35,17 @@ public class Robot extends TimedRobot {
 
   private double sensitivity = 0.5;
 
+  private DigitalInput majElevatorTopSwitch = new DigitalInput(RobotMap.lSMajEleUp);
+  private DigitalInput majElevatorDownSwitch = new DigitalInput(RobotMap.lSMajEleDown);
+
+  private boolean topFirstHit = true;
+
   @Override
   public void robotInit() {
   }
 
   @Override
-  public void teleopInit(){
+  public void teleopInit() {
     frontLeftMotor.configFactoryDefault();
     frontRightMotor.configFactoryDefault();
     backLeftMotor.configFactoryDefault();
@@ -49,32 +55,49 @@ public class Robot extends TimedRobot {
     backRightMotor.follow(frontRightMotor);
 
     frontLeftMotor.setInverted(false);
-		frontRightMotor.setInverted(true);
-		backLeftMotor.setInverted(InvertType.FollowMaster);
+    frontRightMotor.setInverted(true);
+    backLeftMotor.setInverted(InvertType.FollowMaster);
     backRightMotor.setInverted(InvertType.FollowMaster);
-    
+
     drive.setRightSideInverted(false);
   }
+
   @Override
   public void teleopPeriodic() {
+    System.out.println("Switch: " + majElevatorDownSwitch.get());
     double forward = -stick.getY();
     double turn = stick.getX() * sensitivity;
     double sliderSensitivity = (stick.getRawAxis(3) + 1) * 0.5;
-    //System.out.println("JoyY:" + forward + "  turn:" + turn );
+    // System.out.println("JoyY:" + forward + " turn:" + turn );
     drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
 
-    if(stick.getRawButton(5)){
-      majorElevator.set(1);
-    }else if(stick.getRawButton(3)){
-      majorElevator.set(-1);
-    }else{
+    if (stick.getRawButton(RobotMap.joyMajorElevatorUp)) {
+      topFirstHit = true;
+      if (!majElevatorTopSwitch.get()) {
+        if (topFirstHit) {
+          majorElevator.set(1);
+        } else {
+          majorElevator.set(0.5);
+        }
+      } else {
+        if (topFirstHit) {
+          topFirstHit = false;
+        }
+        majorElevator.set(0);
+      }
+    } else if (stick.getRawButton(RobotMap.joyMajorElevatorDown)) {
+      if(majElevatorDownSwitch.get()){
+        majorElevator.set(-1);
+      }else{
+        majorElevator.set(0);
+      }
+    } else {
       majorElevator.set(0);
     }
-
-    System.out.println(stick.getPOV());
+    // System.out.println(stick.getPOV());
   }
 
-  public void reachLevelOne(){
+  public void reachLevelOne() {
 
   }
 }
