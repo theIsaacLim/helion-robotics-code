@@ -26,6 +26,8 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(1);
   WPI_TalonSRX backRightMotor = new WPI_TalonSRX(3);
 
+  WPI_TalonSRX majorElevator = new WPI_TalonSRX(4);
+
   private DifferentialDrive drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
   private Joystick stick = new Joystick(0);
 
@@ -56,7 +58,16 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     double forward = -stick.getY();
     double turn = stick.getX() * sensitivity;
+    double sliderSensitivity = (stick.getRawAxis(3) + 1) * 0.5;
     System.out.println("JoyY:" + forward + "  turn:" + turn );
-    drive.arcadeDrive(forward, turn);
+    drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
+
+    if(stick.getRawButton(5)){
+      majorElevator.set(1);
+    }else if(stick.getRawButton(3)){
+      majorElevator.set(-1);
+    }else{
+      majorElevator.set(0);
+    }
   }
 }
