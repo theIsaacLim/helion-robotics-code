@@ -9,6 +9,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.*;
+import frc.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -20,16 +21,16 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class Robot extends TimedRobot {
 
-  WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(0);
-  WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(2);
+  WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(RobotMap.flChannel);
+  WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(RobotMap.frChannel);
 
-  WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(1);
-  WPI_TalonSRX backRightMotor = new WPI_TalonSRX(3);
+  WPI_TalonSRX backLeftMotor = new WPI_TalonSRX(RobotMap.blChannel);
+  WPI_TalonSRX backRightMotor = new WPI_TalonSRX(RobotMap.brChannel);
 
-  WPI_TalonSRX majorElevator = new WPI_TalonSRX(4);
+  WPI_TalonSRX majorElevator = new WPI_TalonSRX(RobotMap.majElevatorChannel);
 
   private DifferentialDrive drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
-  private Joystick stick = new Joystick(0);
+  private Joystick stick = new Joystick(RobotMap.joyChannel);
 
   private double sensitivity = 0.5;
 
@@ -47,8 +48,8 @@ public class Robot extends TimedRobot {
     backLeftMotor.follow(frontLeftMotor);
     backRightMotor.follow(frontRightMotor);
 
-    frontLeftMotor.setInverted(false); // <<<<<< Adjust this until robot drives forward when stick is forward
-		frontRightMotor.setInverted(true); // <<<<<< Adjust this until robot drives forward when stick is forward
+    frontLeftMotor.setInverted(false);
+		frontRightMotor.setInverted(true);
 		backLeftMotor.setInverted(InvertType.FollowMaster);
     backRightMotor.setInverted(InvertType.FollowMaster);
     
@@ -59,7 +60,7 @@ public class Robot extends TimedRobot {
     double forward = -stick.getY();
     double turn = stick.getX() * sensitivity;
     double sliderSensitivity = (stick.getRawAxis(3) + 1) * 0.5;
-    System.out.println("JoyY:" + forward + "  turn:" + turn );
+    //System.out.println("JoyY:" + forward + "  turn:" + turn );
     drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
 
     if(stick.getRawButton(5)){
@@ -69,5 +70,11 @@ public class Robot extends TimedRobot {
     }else{
       majorElevator.set(0);
     }
+
+    System.out.println(stick.getPOV());
+  }
+
+  public void reachLevelOne(){
+
   }
 }

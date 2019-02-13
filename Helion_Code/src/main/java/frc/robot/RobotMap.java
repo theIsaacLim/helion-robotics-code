@@ -29,18 +29,17 @@ public class RobotMap {
   // public static Talon leftGrabber = new Talon(4);
 
   // This part is wheely cool!
-  public static TalonSRX lf;
 
   rf = new TalonSRX(RobotMap.frontRightChannel);
   rb = new TalonSRX(RobotMap.backRightChannel);
   lf = new TalonSRX(RobotMap.frontLeftChannel);
   lb = new TalonSRX(RobotMap.backLeftChannel);
 
-  public static SpeedControllerGroup left = new SpeedControllerGroup(frontLeftWheel, backLeftWheel);
-  public static SpeedControllerGroup right = new SpeedControllerGroup(frontRightWheel, backRightWheel);
+  // public static SpeedControllerGroup left = new SpeedControllerGroup(frontLeftWheel, backLeftWheel);
+  // public static SpeedControllerGroup right = new SpeedControllerGroup(frontRightWheel, backRightWheel);
   // public static RobotDrive myDrive = new RobotDrive(frontLeftWheel,
   // backLeftWheel, frontRightWheel, backRightWheel);
-  public static DifferentialDrive secondDrive = new DifferentialDrive(left, right);
+  // public static DifferentialDrive secondDrive = new DifferentialDrive(left, right);
   // Controller
   public static Joystick leftJoy = new Joystick(0);
   // public static Joystick rightJoy = new Joystick(0);
