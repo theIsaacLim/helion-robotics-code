@@ -20,6 +20,7 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX backRightMotor;
 
   WPI_TalonSRX majorElevator;
+  WPI_TalonSRX minorElevator;
 
   private DifferentialDrive drive;
   private Joystick stick;
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
     backRightMotor = new WPI_TalonSRX(RobotMap.brChannel);
 
     majorElevator = new WPI_TalonSRX(RobotMap.majElevatorChannel);
+    minorElevator = new WPI_TalonSRX(RobotMap.minElevatorChannel);
 
     drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
@@ -84,6 +86,12 @@ public class Robot extends TimedRobot {
     double turn = stick.getX() * sensitivity;
     double sliderSensitivity = (stick.getRawAxis(3) + 1) * 0.5;
     // System.out.println("JoyY:" + forward + " turn:" + turn );
+
+    if(forward < 0){
+      forward *= 0.5;
+    }
+    //Cause Jing almost tipped the robot while driving back
+
     drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
 
     if (stick.getRawButton(RobotMap.joyMajorElevatorUp)) {
@@ -108,6 +116,14 @@ public class Robot extends TimedRobot {
       }
     } else {
       majorElevator.set(0);
+    }
+
+    if(stick.getRawButton(RobotMap.joyMinorElevatorUp)){
+      minorElevator.set(1);
+    }else if(stick.getRawButton(RobotMap.joyMinorElevatorDown)){
+      minorElevator.set(-1);
+    }else{
+      minorElevator.set(0);
     }
     // System.out.println(stick.getPOV());
   }
