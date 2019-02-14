@@ -24,6 +24,9 @@ public class Robot extends TimedRobot {
   WPI_TalonSRX majorElevator;
   WPI_TalonSRX minorElevator;
 
+  WPI_TalonSRX mainGrabber;
+  WPI_TalonSRX slaveGrabber;
+
   // The drive the robot uses
   private DifferentialDrive drive;
   // Joystick
@@ -53,6 +56,9 @@ public class Robot extends TimedRobot {
     majorElevator = new WPI_TalonSRX(RobotMap.majElevatorChannel);
     minorElevator = new WPI_TalonSRX(RobotMap.minElevatorChannel);
 
+    mainGrabber = new WPI_TalonSRX(RobotMap.mainGrabber);
+    slaveGrabber = new WPI_TalonSRX(RobotMap.slaveGrabber);
+
     drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
     stick = new Joystick(RobotMap.joyChannel);
@@ -75,14 +81,20 @@ public class Robot extends TimedRobot {
     frontRightMotor.configFactoryDefault();
     backLeftMotor.configFactoryDefault();
     backRightMotor.configFactoryDefault();
+    majorElevator.configFactoryDefault();
+    minorElevator.configFactoryDefault();
+    mainGrabber.configFactoryDefault();
+    slaveGrabber.configFactoryDefault();
 
     backLeftMotor.follow(frontLeftMotor);
     backRightMotor.follow(frontRightMotor);
+    slaveGrabber.follow(mainGrabber);
 
     frontLeftMotor.setInverted(false);
     frontRightMotor.setInverted(true);
     backLeftMotor.setInverted(InvertType.FollowMaster);
     backRightMotor.setInverted(InvertType.FollowMaster);
+    slaveGrabber.setInverted(true);
 
     drive.setRightSideInverted(false);
   }
@@ -93,7 +105,7 @@ public class Robot extends TimedRobot {
     double forward = -stick.getY();
     double turn = stick.getX() * sensitivity;
     // Another sensitivity control. Controlled by a slider on the joystick. Value is -1 ~ 1, the command converts it to 0 ~ 1.
-    double sliderSensitivity = (stick.getRawAxis(RobotMap.joySensitivitySlider) + 1) * 0.5;
+    double sliderSensitivity = -(stick.getRawAxis(RobotMap.joySensitivitySlider) + 1) * 0.5;
     // System.out.println("JoyY:" + forward + " turn:" + turn );
 
     if (forward < 0) {
@@ -140,6 +152,14 @@ public class Robot extends TimedRobot {
       minorElevator.set(0);
     }
     // System.out.println(stick.getPOV());
+
+    if (stick.getRawButton(RobotMap.joyShoot)){
+      mainGrabber.set(1);
+    }else if (stick.getRawButton(RobotMap.joySucc)){
+      mainGrabber.set(-1); // Adjust until matches
+    }else{
+      mainGrabber.set(0);
+    }
   }
 
 }
