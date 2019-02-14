@@ -154,9 +154,10 @@ public class Robot extends TimedRobot {
     // System.out.println(stick.getPOV());
 
     if (stick.getRawButton(RobotMap.joyShoot)){
-      mainGrabber.set(1);
+      mainGrabber.set(0.5);
     }else if (stick.getRawButton(RobotMap.joySucc)){
-      mainGrabber.set(-1); // Adjust until matches
+      mainGrabber.set(-0.5
+      ); // Adjust until matches
     }else{
       mainGrabber.set(0);
     }
