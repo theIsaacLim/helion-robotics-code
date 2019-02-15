@@ -1,6 +1,6 @@
 package frc.robot;
 
-public class RobotMap{
+public class RobotMap {
     public static final int flChannel = 0;
     public static final int frChannel = 2;
     public static final int blChannel = 1;

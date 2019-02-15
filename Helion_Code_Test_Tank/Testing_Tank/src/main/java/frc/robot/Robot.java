@@ -39,7 +39,8 @@ public class Robot extends TimedRobot {
   private DigitalInput majElevatorTopSwitch;
   private DigitalInput majElevatorDownSwitch;
 
-  // Boolean to control whether its the first hit of the elevator or the repeated successions.
+  // Boolean to control whether its the first hit of the elevator or the repeated
+  // successions.
   private boolean topFirstHit;
 
   // Camera
@@ -104,7 +105,8 @@ public class Robot extends TimedRobot {
     // System.out.println("Switch: " + majElevatorDownSwitch.get());
     double forward = -stick.getY();
     double turn = stick.getX() * sensitivity;
-    // Another sensitivity control. Controlled by a slider on the joystick. Value is -1 ~ 1, the command converts it to 0 ~ 1.
+    // Another sensitivity control. Controlled by a slider on the joystick. Value is
+    // -1 ~ 1, the command converts it to 0 ~ 1.
     double sliderSensitivity = -(stick.getRawAxis(RobotMap.joySensitivitySlider) + 1) * 0.5;
     // System.out.println("JoyY:" + forward + " turn:" + turn );
 
@@ -128,10 +130,12 @@ public class Robot extends TimedRobot {
         }
       } else {
         if (topFirstHit) {
-          // If it is not clicked, and it is after first hit. Sets it back to the first click.
+          // If it is not clicked, and it is after first hit. Sets it back to the first
+          // click.
           topFirstHit = false;
         }
-        majorElevator.set(0);
+        majorElevator.set(0.2);
+        // Passive Lifting to prevent. Reuires Calibration
       }
     } else if (stick.getRawButton(RobotMap.joyMajorElevatorDown)) {
       // Result is not inverted, due to connection to NC and Ground on limit switch.
@@ -153,12 +157,11 @@ public class Robot extends TimedRobot {
     }
     // System.out.println(stick.getPOV());
 
-    if (stick.getRawButton(RobotMap.joyShoot)){
+    if (stick.getRawButton(RobotMap.joyShoot)) {
       mainGrabber.set(0.5);
-    }else if (stick.getRawButton(RobotMap.joySucc)){
-      mainGrabber.set(-0.5
-      ); // Adjust until matches
-    }else{
+    } else if (stick.getRawButton(RobotMap.joySucc)) {
+      mainGrabber.set(-0.5); // Adjust until matches
+    } else {
       mainGrabber.set(0);
     }
   }
