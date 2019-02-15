@@ -23,4 +23,6 @@ public class RobotMap {
 
     public static final int lSMajEleUp = 0;
     public static final int lSMajEleDown = 1;
+    public static final int lSMinEleUp = 2;
+    public static final int lSMinEleDown = 3;
 }
