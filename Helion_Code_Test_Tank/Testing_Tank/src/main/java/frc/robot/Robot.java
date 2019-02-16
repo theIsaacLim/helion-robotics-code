@@ -136,6 +136,7 @@ public class Robot extends TimedRobot {
     drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
 
     if (stick.getRawButton(RobotMap.joyMajorElevatorUp)) {
+      System.out.println("going up");
       majTopFirstHit = true;
       // Result is inverted, due to connection to NO and Ground on the limit switch.
       if (!majElevatorTopSwitch.get()) {
@@ -154,6 +155,7 @@ public class Robot extends TimedRobot {
         }
       }
     } else if (stick.getRawButton(RobotMap.joyMajorElevatorDown)) {
+      System.out.println("going down");
       // Result is not inverted, due to connection to NC and Ground on limit switch.
       if (majElevatorDownSwitch.get()) {
         majorElevatorMode = "reachBottom";
@@ -195,10 +197,7 @@ public class Robot extends TimedRobot {
         minorElevatorMode = "idle";
         // Passive Lifting to prevent. Reuires Calibration
       }
-    }
-    // System.out.println(stick.getPOV());
-    // POV Overrides for manual grabber control.
-    else if (stick.getPOV() == 0) {
+    } else if (stick.getPOV() == 0) {
       // If 0, grabber manually moves tiny bit upwards.
       minorElevatorMode = "manualUp";
     } else if (stick.getPOV() == 180) {
@@ -214,20 +213,25 @@ public class Robot extends TimedRobot {
       mainGrabber.set(0);
     }
 
+    System.out.println("Major Elevator Mode: " + majorElevatorMode);
+    
     switch (majorElevatorMode) {
     case "idle":
-      majorElevator.set(0.2);
+      majorElevator.set(0);
     case "topFirstHit":
       majorElevator.set(1);
     case "topRepeatedHit":
       majorElevator.set(0.5);
     case "reachBottom":
       majorElevator.set(-1);
+    case "default":
+      majorElevator.set(0);
     }
+    // majorElevator.set(0);
 
     switch (minorElevatorMode) {
     case "idle":
-      minorElevator.set(0.2);
+      minorElevator.set(0);
     case "topFirstHit":
       minorElevator.set(1);
     case "topRepeatedHit":
@@ -238,6 +242,8 @@ public class Robot extends TimedRobot {
       minorElevator.set(0.4);
     case "manualDown":
       minorElevator.set(-0.1);
+    case "default":
+      minorElevator.set(0);
     }
   }
 
