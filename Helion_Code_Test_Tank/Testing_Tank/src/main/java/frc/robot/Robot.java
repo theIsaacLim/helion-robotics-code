@@ -165,7 +165,7 @@ public class Robot extends TimedRobot {
       // Passive Lifting to prevent. Reuires Calibration
     }
 
-    if (stick.getPOV() != 0 && stick.getPOV != 180) { // If no POV overrides given.
+    if (stick.getPOV() != 0 && stick.getPOV() != 180) { // If no POV overrides given.
       if (stick.getRawButton(RobotMap.joyMinorElevatorUp)) {
         minTopFirstHit = true;
         // Check limit switch condition. Connect to NO and Ground for inverse.
