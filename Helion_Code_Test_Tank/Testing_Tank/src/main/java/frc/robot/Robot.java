@@ -3,10 +3,12 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.*;
 import frc.robot.RobotMap;
-
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.MotorSafety;
 //import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Robot extends TimedRobot {
@@ -58,8 +60,8 @@ public class Robot extends TimedRobot {
 
   // private boolean minTopFirstHit;
 
-  // // Camera
-  // private UsbCamera camera;
+  // Camera
+  private UsbCamera camera;
 
   @Override
   public void robotInit() {
@@ -79,7 +81,7 @@ public class Robot extends TimedRobot {
 
     stick = new Joystick(RobotMap.joyChannel);
 
-    sensitivity = 0.5;
+    sensitivity = 0.7;
 
     // majElevatorTopSwitch = new DigitalInput(RobotMap.lSMajEleUp);
     // majElevatorDownSwitch = new DigitalInput(RobotMap.lSMajEleDown);
@@ -93,9 +95,9 @@ public class Robot extends TimedRobot {
     // majorElevatorMode = "idle";
     // minorElevatorMode = "idle";
 
-    // camera = CameraServer.getInstance().startAutomaticCapture();
-    // camera.setResolution(640, 480);
-    // camera.setFPS(15);
+    camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(640, 480);
+    camera.setFPS(15);
   }
 
   @Override
