@@ -98,10 +98,7 @@ public class Robot extends TimedRobot {
     camera = CameraServer.getInstance().startAutomaticCapture();
     camera.setResolution(640, 480);
     camera.setFPS(15);
-  }
 
-  @Override
-  public void teleopInit() {
     frontLeftMotor.configFactoryDefault();
     frontRightMotor.configFactoryDefault();
     backLeftMotor.configFactoryDefault();
@@ -124,6 +121,11 @@ public class Robot extends TimedRobot {
     // majorElevator.setInverted(true);
 
     drive.setRightSideInverted(false);
+  }
+
+  @Override
+  public void teleopInit() {
+
   }
 
   @Override

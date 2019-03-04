@@ -13,9 +13,11 @@ public class RobotMap {
     public static final int slaveGrabber = 7;
 
     public static final int joyChannel = 0;
+    public static final int joySensitivitySlider = 3;
+
+    public static final int gameChannel = 1;
     public static final int joyShoot = 1;
     public static final int joySucc = 2;
-    public static final int joySensitivitySlider = 3;
     public static final int joyMajorElevatorUp = 5;
     public static final int joyMajorElevatorDown = 3;
     public static final int joyMinorElevatorUp = 6;
