@@ -16,6 +16,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
+
+
+import edu.wpi.first.wpilibj.vision.VisionRunner;
+import edu.wpi.first.wpilibj.vision.VisionThread;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+
+
 import frc.robot.VisionPipeline;
 
 /**
@@ -33,11 +41,10 @@ public class Robot extends TimedRobot {
 	
 	private VisionThread visionThread;
 	private double centerX = 0.0;
-	private RobotDrive drive;
 	
   private final Object imgLock = new Object();
   
-  
+
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -51,6 +58,20 @@ public class Robot extends TimedRobot {
     // chooser.addOption("My Auto", new MyAutoCommand());
     CameraServer.getInstance().startAutomaticCapture();
     SmartDashboard.putData("Auto mode", m_chooser);
+
+
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+    
+    visionThread = new VisionThread(camera, new MyVisionPipeline(), pipeline -> {
+        if (!pipeline.filterContoursOutput().isEmpty()) {
+            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+            synchronized (imgLock) {
+                centerX = r.x + (r.width / 2);
+            }
+        }
+    });
+    visionThread.start();
   }
 
   /**
