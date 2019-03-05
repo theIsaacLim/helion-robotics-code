@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.MotorSafety;
 //import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.vision.VisionRunner;
+import edu.wpi.first.wpilibj.vision.VisionThread;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
 
 public class Robot extends TimedRobot {
 
@@ -62,9 +66,11 @@ public class Robot extends TimedRobot {
 
   // Camera
   private UsbCamera camera;
+  private VisionThread visionThread;
 
   @Override
   public void robotInit() {
+
     frontLeftMotor = new WPI_VictorSPX(RobotMap.flChannel);
     frontRightMotor = new WPI_VictorSPX(RobotMap.frChannel);
 
@@ -121,6 +127,19 @@ public class Robot extends TimedRobot {
     // majorElevator.setInverted(true);
 
     drive.setRightSideInverted(false);
+
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(640, 480);
+
+    visionThread = new VisionThread(camera, new MyVisionPipeline(), pipeline -> {
+        if (!pipeline.filterContoursOutput().isEmpty()) {
+            Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+            synchronized (imgLock) {
+                centerX = r.x + (r.width / 2);
+            }
+        }
+    });
+    visionThread.start();
   }
 
   @Override
