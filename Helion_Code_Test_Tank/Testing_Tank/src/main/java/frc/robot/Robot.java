@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Servo;
 
 public class Robot extends TimedRobot {
 
@@ -58,6 +59,10 @@ public class Robot extends TimedRobot {
   // // Camera
   // private UsbCamera camera;
 
+  //Hatch and grabber release servos
+  private Servo grabberRelease;
+  private Servo hatchRelease;
+
   @Override
   public void robotInit() {
     frontLeftMotor = new WPI_TalonSRX(RobotMap.flChannel);
@@ -94,10 +99,10 @@ public class Robot extends TimedRobot {
     // camera = CameraServer.getInstance().startAutomaticCapture();
     // camera.setResolution(640, 480);
     // camera.setFPS(15);
-  }
 
-  @Override
-  public void teleopInit() {
+    grabberRelease = new Servo(RobotMap.grabberReleaseServo);
+    hatchRelease = new Servo(RobotMap.hatchReleaseServo);
+
     frontLeftMotor.configFactoryDefault();
     frontRightMotor.configFactoryDefault();
     backLeftMotor.configFactoryDefault();
@@ -120,6 +125,17 @@ public class Robot extends TimedRobot {
     majorElevator.setInverted(true);
 
     drive.setRightSideInverted(false);
+  }
+
+  @Override
+  public void autonomousInit() {
+    // Requires testing. See if servo values are correct and if init works every time.
+    grabberRelease.setAngle(RobotMap.grabberServoReleaseAngle);
+  }
+
+  @Override
+  public void autonomousPeriodic(){
+    
   }
 
   @Override
@@ -214,6 +230,13 @@ public class Robot extends TimedRobot {
       mainGrabber.set(0);
     }
 
+    if (gameStick.getRawButton(RobotMap.hatchServoRelease)){
+      hatchRelease.setAngle(RobotMap.hatchServoReleaseAngle);
+    }else if (gameStick.getRawButton(RobotMap.hatchServoGrab)){
+      hatchRelease.setAngle(RobotMap.hatchServoGrabAngle);
+    }else{
+      hatchRelease.setAngle(RobotMap.hatchServoIdleAngle);
+    }
     // switch (majorElevatorMode) {
     // case "idle":
     //   majorElevator.set(1);
