@@ -13,6 +13,7 @@ public class RobotMap {
     public static final int slaveGrabber = 7;
 
     public static final int joyChannel = 0;
+    public static final int gameChannel = 1; // Gamepad channel. Controls elevator. The rest on the bottom should be adjusted based on gamepad preferences.
     public static final int joyShoot = 1;
     public static final int joySucc = 2;
     public static final int joySensitivitySlider = 3;

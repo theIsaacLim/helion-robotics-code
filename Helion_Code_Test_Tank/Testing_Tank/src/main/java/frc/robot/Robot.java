@@ -30,7 +30,8 @@ public class Robot extends TimedRobot {
   // The drive the robot uses
   private DifferentialDrive drive;
   // Joystick
-  private Joystick stick;
+  private Joystick movStick;
+  private Joystick gameStick;
 
   // Sensitivity for movement, constant.
   private double sensitivity;
@@ -73,7 +74,8 @@ public class Robot extends TimedRobot {
 
     drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
-    stick = new Joystick(RobotMap.joyChannel);
+    movStick = new Joystick(RobotMap.joyChannel);
+    gameStick = new Joystick(RobotMap.gameChannel);
 
     sensitivity = 0.5;
 
@@ -122,11 +124,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    double forward = stick.getY();
-    double turn = -stick.getX() * sensitivity;
+    double forward = movStick.getY();
+    double turn = -movStick.getX() * sensitivity;
     // Another sensitivity control. Controlled by a slider on the joystick. Value is
     // -1 ~ 1, the command converts it to 0 ~ 1.
-    double sliderSensitivity = -(stick.getRawAxis(RobotMap.joySensitivitySlider) + 1) * 0.5;
+    double sliderSensitivity = -(movStick.getRawAxis(RobotMap.joySensitivitySlider) + 1) * 0.5;
 
     if (forward > 0) {
       forward *= 0.5;
@@ -135,7 +137,7 @@ public class Robot extends TimedRobot {
 
     drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
 
-    if (stick.getRawButton(RobotMap.joyMajorElevatorUp)) {
+    if (gameStick.getRawButton(RobotMap.joyMajorElevatorUp)) {
       System.out.println("going up");
       majTopFirstHit = true;
       // Result is inverted, due to connection to NO and Ground on the limit switch.
@@ -154,7 +156,7 @@ public class Robot extends TimedRobot {
           majTopFirstHit = false;
         }
       }
-    } else if (stick.getRawButton(RobotMap.joyMajorElevatorDown)) {
+    } else if (gameStick.getRawButton(RobotMap.joyMajorElevatorDown)) {
       // Result is not inverted, due to connection to NC and Ground on limit switch.
       if (majElevatorDownSwitch.get()) {
         majorElevator.set(-1);
@@ -166,8 +168,8 @@ public class Robot extends TimedRobot {
       // Passive Lifting to prevent. Reuires Calibration
     }
 
-    if (stick.getPOV() != 0 && stick.getPOV() != 180) { // If no POV overrides given.
-      if (stick.getRawButton(RobotMap.joyMinorElevatorUp)) {
+    if (gameStick.getPOV() != 0 && gameStick.getPOV() != 180) { // If no POV overrides given.
+      if (gameStick.getRawButton(RobotMap.joyMinorElevatorUp)) {
         minTopFirstHit = true;
         // Check limit switch condition. Connect to NO and Ground for inverse.
         // if (!minElevatorTopSwitch.get()) {
@@ -185,7 +187,7 @@ public class Robot extends TimedRobot {
           //   minTopFirstHit = false;
           // }
         //}
-      } else if (stick.getRawButton(RobotMap.joyMinorElevatorDown)) {
+      } else if (gameStick.getRawButton(RobotMap.joyMinorElevatorDown)) {
         // Check connection. If NO and Ground should be inverse
         // if (!minElevatorDownSwitch.get()) {
           minorElevator.set(-1);
@@ -196,17 +198,17 @@ public class Robot extends TimedRobot {
         minorElevator.set(0);
         // Passive Lifting to prevent. Reuires Calibration
       }
-    } else if (stick.getPOV() == 0) {
+    } else if (gameStick.getPOV() == 0) {
       // If 0, grabber manually moves tiny bit upwards.
       minorElevator.set(0.1);
-    } else if (stick.getPOV() == 180) {
+    } else if (gameStick.getPOV() == 180) {
       // If 180, grabber manually move tiny bit down.
       minorElevator.set(-0.1);
     }
 
-    if (stick.getRawButton(RobotMap.joyShoot)) {
+    if (gameStick.getRawButton(RobotMap.joyShoot)) {
       mainGrabber.set(0.7);
-    } else if (stick.getRawButton(RobotMap.joySucc)) {
+    } else if (gameStick.getRawButton(RobotMap.joySucc)) {
       mainGrabber.set(-0.3); // Adjust positive / negative until matches
     } else {
       mainGrabber.set(0);
