@@ -153,7 +153,7 @@ public class Robot extends TimedRobot {
 
     drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
 
-    if (gameStick.getRawButton(RobotMap.joyMajorElevatorUp)) {
+    if (gameStick.getRawAxis(RobotMap.joyMajorElevator) < 0.5) {
       System.out.println("going up");
       majTopFirstHit = true;
       // Result is inverted, due to connection to NO and Ground on the limit switch.
@@ -172,7 +172,7 @@ public class Robot extends TimedRobot {
           majTopFirstHit = false;
         }
       }
-    } else if (gameStick.getRawButton(RobotMap.joyMajorElevatorDown)) {
+    } else if (gameStick.getRawAxis(RobotMap.joyMajorElevator) > 0.5) {
       // Result is not inverted, due to connection to NC and Ground on limit switch.
       if (majElevatorDownSwitch.get()) {
         majorElevator.set(-1);
@@ -185,7 +185,7 @@ public class Robot extends TimedRobot {
     }
 
     if (gameStick.getPOV() != 0 && gameStick.getPOV() != 180) { // If no POV overrides given.
-      if (gameStick.getRawButton(RobotMap.joyMinorElevatorUp)) {
+      if (gameStick.getRawAxis(RobotMap.joyMinorElevator) < 0.5) {
         minTopFirstHit = true;
         // Check limit switch condition. Connect to NO and Ground for inverse.
         // if (!minElevatorTopSwitch.get()) {
@@ -203,7 +203,7 @@ public class Robot extends TimedRobot {
           //   minTopFirstHit = false;
           // }
         //}
-      } else if (gameStick.getRawButton(RobotMap.joyMinorElevatorDown)) {
+      } else if (gameStick.getRawAxis(RobotMap.joyMinorElevator) > 0.5) {
         // Check connection. If NO and Ground should be inverse
         // if (!minElevatorDownSwitch.get()) {
           minorElevator.set(-1);
@@ -222,9 +222,9 @@ public class Robot extends TimedRobot {
       minorElevator.set(-0.1);
     }
 
-    if (gameStick.getRawButton(RobotMap.joyShoot)) {
+    if (gameStick.getRawAxis(RobotMap.joyShootLeft) > 0.5 || gameStick.getRawAxis(RobotMap.joyShootRight) > 0.5) {
       mainGrabber.set(0.7);
-    } else if (gameStick.getRawButton(RobotMap.joySucc)) {
+    } else if (gameStick.getRawAxis(RobotMap.joySuccLeft) > 0.5 || gameStick.getRawAxis(RobotMap.joySuccRight) > 0.5) {
       mainGrabber.set(-0.3); // Adjust positive / negative until matches
     } else {
       mainGrabber.set(0);
