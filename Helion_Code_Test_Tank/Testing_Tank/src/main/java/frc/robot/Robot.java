@@ -45,8 +45,10 @@ public class Robot extends TimedRobot {
   // repeated successions.
   private boolean majTopFirstHit;
 
-  // Camera
-  private UsbCamera camera;
+  // Camera alongside with the boolean controlling backwards movemet
+  private UsbCamera frontCamera;
+  private UsbCamera backCamera;
+  private boolean facingBack;
 
   // Hatch and grabber release servos
   private Servo grabberRelease;
@@ -85,9 +87,12 @@ public class Robot extends TimedRobot {
     // majorElevatorMode = "idle";
     // minorElevatorMode = "idle";
 
-    camera = CameraServer.getInstance().startAutomaticCapture();
-    camera.setResolution(640, 480);
-    camera.setFPS(35);
+    frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
+    frontCamera.setResolution(640, 480);
+    frontCamera.setFPS(15);
+    backCamera = CameraServer.getInstance().startAutomaticCapture(1);
+    backCamera.setResolution(320, 240);
+    backCamera.setFPS(15);
 
     grabberRelease = new Servo(RobotMap.grabberReleaseServo);
     hatchRelease = new Servo(RobotMap.hatchReleaseServo);
@@ -123,15 +128,25 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     grabberRelease.setAngle(RobotMap.grabberServoReleaseAngle);
+    facingBack = true;
   }
 
   @Override
   public void autonomousPeriodic() {
   }
 
+  public void teleopInit(){
+    facingBack = false;
+  }
+
   @Override
   public void teleopPeriodic() {
-    double forward = movStick.getY();
+    if(!facingBack){
+      double forward = movStick.getY();
+    }
+    else{
+      double forward = -movStick.getY();
+    }
     double turn = -movStick.getX() * sensitivity;
     // Another sensitivity control. Controlled by a slider on the joystick. Value is
     // -1 ~ 1, the command converts it to 0 ~ 1.
