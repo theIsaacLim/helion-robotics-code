@@ -56,8 +56,8 @@ public class Robot extends TimedRobot {
 
   // Boolean to control the first hit of grabber elevator.
   private boolean minTopFirstHit;
-  // // Camera
-  // private UsbCamera camera;
+  // Camera
+  private UsbCamera camera;
 
   //Hatch and grabber release servos
   private Servo grabberRelease;
@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
     movStick = new Joystick(RobotMap.joyChannel);
     gameStick = new Joystick(RobotMap.gameChannel);
 
-    sensitivity = 0.5;
+    sensitivity = 1;
 
     majElevatorTopSwitch = new DigitalInput(RobotMap.lSMajEleUp);
     majElevatorDownSwitch = new DigitalInput(RobotMap.lSMajEleDown);
@@ -96,9 +96,9 @@ public class Robot extends TimedRobot {
     // majorElevatorMode = "idle";
     // minorElevatorMode = "idle";
 
-    // camera = CameraServer.getInstance().startAutomaticCapture();
-    // camera.setResolution(640, 480);
-    // camera.setFPS(15);
+    camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(640, 480);
+    camera.setFPS(35);
 
     grabberRelease = new Servo(RobotMap.grabberReleaseServo);
     hatchRelease = new Servo(RobotMap.hatchReleaseServo);
@@ -127,6 +127,9 @@ public class Robot extends TimedRobot {
     drive.setRightSideInverted(false);
   }
 
+  public void testPeriodic(){
+  }
+
   @Override
   public void autonomousInit() {
     // Requires testing. See if servo values are correct and if init works every time.
@@ -135,16 +138,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic(){
-    
-  }
-
-  @Override
-  public void teleopPeriodic() {
     double forward = movStick.getY();
     double turn = -movStick.getX() * sensitivity;
     // Another sensitivity control. Controlled by a slider on the joystick. Value is
     // -1 ~ 1, the command converts it to 0 ~ 1.
-    double sliderSensitivity = -(movStick.getRawAxis(RobotMap.joySensitivitySlider) + 1) * 0.5;
+    double sliderSensitivity = -movStick.getRawAxis(RobotMap.joySensitivitySlider) + 1;
 
     if (forward > 0) {
       forward *= 0.5;
@@ -152,9 +150,9 @@ public class Robot extends TimedRobot {
     // Cause Jing almost tipped the robot while driving back
 
     drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
-
-    if (gameStick.getRawAxis(RobotMap.joyMajorElevator) < 0.5) {
-      System.out.println("going up");
+    //System.out.println(gameStick.getRawAxis(RobotMap.joyMajorElevator));
+    if (gameStick.getRawAxis(RobotMap.joyMajorElevator) < -0.25) {
+      //System.out.println("going up");
       majTopFirstHit = true;
       // Result is inverted, due to connection to NO and Ground on the limit switch.
       if (!majElevatorTopSwitch.get()) {
@@ -172,7 +170,7 @@ public class Robot extends TimedRobot {
           majTopFirstHit = false;
         }
       }
-    } else if (gameStick.getRawAxis(RobotMap.joyMajorElevator) > 0.5) {
+    } else if (gameStick.getRawAxis(RobotMap.joyMajorElevator) > 0.25) {
       // Result is not inverted, due to connection to NC and Ground on limit switch.
       if (majElevatorDownSwitch.get()) {
         majorElevator.set(-1);
@@ -185,7 +183,7 @@ public class Robot extends TimedRobot {
     }
 
     if (gameStick.getPOV() != 0 && gameStick.getPOV() != 180) { // If no POV overrides given.
-      if (gameStick.getRawAxis(RobotMap.joyMinorElevator) < 0.5) {
+      if (gameStick.getRawAxis(RobotMap.joyMinorElevator) < -0.25) {
         minTopFirstHit = true;
         // Check limit switch condition. Connect to NO and Ground for inverse.
         // if (!minElevatorTopSwitch.get()) {
@@ -203,7 +201,138 @@ public class Robot extends TimedRobot {
           //   minTopFirstHit = false;
           // }
         //}
-      } else if (gameStick.getRawAxis(RobotMap.joyMinorElevator) > 0.5) {
+      } else if (gameStick.getRawAxis(RobotMap.joyMinorElevator) > 0.25) {
+        // Check connection. If NO and Ground should be inverse
+        // if (!minElevatorDownSwitch.get()) {
+          minorElevator.set(-1);
+        // } else {
+        //   minorElevator.set(0);
+        // }
+      } else {
+        minorElevator.set(0);
+        // Passive Lifting to prevent. Reuires Calibration
+      }
+    } else if (gameStick.getPOV() == 0) {
+      // If 0, grabber manually moves tiny bit upwards.
+      minorElevator.set(0.1);
+    } else if (gameStick.getPOV() == 180) {
+      // If 180, grabber manually move tiny bit down.
+      minorElevator.set(-0.1);
+    }
+
+    if (gameStick.getRawAxis(RobotMap.joyShootLeft) > 0.5 || gameStick.getRawAxis(RobotMap.joyShootRight) > 0.5) {
+      mainGrabber.set(0.7);
+    } else if (gameStick.getRawAxis(RobotMap.joySuccLeft) > 0.5 || gameStick.getRawAxis(RobotMap.joySuccRight) > 0.5) {
+      mainGrabber.set(-0.3); // Adjust positive / negative until matches
+    } else {
+      mainGrabber.set(0);
+    }
+
+    if (gameStick.getRawButton(RobotMap.hatchServoRelease)){
+      hatchRelease.setAngle(RobotMap.hatchServoReleaseAngle);
+    }else if (gameStick.getRawButton(RobotMap.hatchServoGrab)){
+      hatchRelease.setAngle(RobotMap.hatchServoGrabAngle);
+    }else{
+      hatchRelease.setAngle(RobotMap.hatchServoIdleAngle);
+    }
+    // switch (majorElevatorMode) {
+    // case "idle":
+    //   majorElevator.set(1);
+    // case "topFirstHit":
+    //   majorElevator.set(1);
+    // case "topRepeatedHit":
+    //   majorElevator.set(0.5);
+    // case "reachBottom":
+    //   majorElevator.set(-1);
+    // case "default":
+    //   majorElevator.set(0);
+    // }
+
+    // switch (minorElevatorMode) {
+    // case "idle":
+    //   minorElevator.set(0);
+    // case "topFirstHit":
+    //   minorElevator.set(1);
+    // case "topRepeatedHit":
+    //   minorElevator.set(0.5);
+    // case "reachBottom":
+    //   minorElevator.set(-1);
+    // case "manualUp":
+    //   minorElevator.set(0.4);
+    // case "manualDown":
+    //   minorElevator.set(-0.1);
+    // case "default":
+    //   minorElevator.set(0);
+    // }
+    //System.out.println(majElevatorTopSwitch.get());
+  }
+
+  @Override
+  public void teleopPeriodic() {
+    double forward = movStick.getY();
+    double turn = -movStick.getX() * sensitivity;
+    // Another sensitivity control. Controlled by a slider on the joystick. Value is
+    // -1 ~ 1, the command converts it to 0 ~ 1.
+    double sliderSensitivity = -movStick.getRawAxis(RobotMap.joySensitivitySlider) + 1;
+
+    if (forward > 0) {
+      forward *= 0.5;
+    }
+    // Cause Jing almost tipped the robot while driving back
+
+    drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
+    //System.out.println(gameStick.getRawAxis(RobotMap.joyMajorElevator));
+    if (gameStick.getRawAxis(RobotMap.joyMajorElevator) < -0.25) {
+      //System.out.println("going up");
+      majTopFirstHit = true;
+      // Result is inverted, due to connection to NO and Ground on the limit switch.
+      if (!majElevatorTopSwitch.get()) {
+        if (majTopFirstHit) {
+          // If it is before the first hit, it will go up at a faster rate.
+          majorElevator.set(1);
+        } else {
+          // If repeated hit, but under same click, goes up slower.
+          majorElevator.set(0.2);
+        }
+      } else {
+        if (majTopFirstHit) {
+          // If hits top and continues to press, and first hit, sets to repeat. Idle.
+          majorElevator.set(0.1);
+          majTopFirstHit = false;
+        }
+      }
+    } else if (gameStick.getRawAxis(RobotMap.joyMajorElevator) > 0.25) {
+      // Result is not inverted, due to connection to NC and Ground on limit switch.
+      if (majElevatorDownSwitch.get()) {
+        majorElevator.set(-1);
+      } else {
+        majorElevator.set(0.1);
+      }
+    } else {
+      majorElevator.set(0.1);
+      // Passive Lifting to prevent. Reuires Calibration
+    }
+
+    if (gameStick.getPOV() != 0 && gameStick.getPOV() != 180) { // If no POV overrides given.
+      if (gameStick.getRawAxis(RobotMap.joyMinorElevator) < -0.25) {
+        minTopFirstHit = true;
+        // Check limit switch condition. Connect to NO and Ground for inverse.
+        // if (!minElevatorTopSwitch.get()) {
+          // if (minTopFirstHit) {
+            // If it is before the first hit, it will go up at a faster rate.
+            minorElevator.set(1);
+          // } else {
+          //   // If repeated hit, but under same click, goes up slower.
+          //   minorElevator.set(0.2);
+          // }
+        // } else {
+          // if (minTopFirstHit) {
+          //   // If hits top and continues to press, and first hit, sets to repeat. Idle.
+          //   minorElevator.set(0);
+          //   minTopFirstHit = false;
+          // }
+        //}
+      } else if (gameStick.getRawAxis(RobotMap.joyMinorElevator) > 0.25) {
         // Check connection. If NO and Ground should be inverse
         // if (!minElevatorDownSwitch.get()) {
           minorElevator.set(-1);
