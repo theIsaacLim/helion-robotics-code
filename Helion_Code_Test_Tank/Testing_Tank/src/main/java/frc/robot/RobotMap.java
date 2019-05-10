@@ -44,5 +44,5 @@ public class RobotMap {
     public static final double grabberServoReleaseAngle = 180; //Must test
     public static final double hatchServoReleaseAngle = 20;
     public static final double hatchServoGrabAngle = 60;
-    public static final double hatchServoIdleAngle = 150;
+    public static final double hatchServoIdleAngle = 90;
 }
