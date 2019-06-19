@@ -160,115 +160,115 @@ public class Robot extends TimedRobot {
     }
     // Cause Jing almost tipped the robot while driving back
 
-    drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
+    //drive.arcadeDrive(forward * sliderSensitivity, turn * sliderSensitivity);
 
-    // if (stick.getRawButton(RobotMap.joyMajorElevatorUp)) {
-    //   System.out.println("going up");
-    //   majTopFirstHit = true;
-    //   // Result is inverted, due to connection to NO and Ground on the limit switch.
-    //   if (!majElevatorTopSwitch.get()) {
-    //     if (majTopFirstHit) {
-    //       // If it is before the first hit, it will go up at a faster rate.
-    //       majorElevator.set(1);
-    //     } else {
-    //       // If repeated hit, but under same click, goes up slower.
-    //       majorElevator.set(0.2);
-    //     }
-    //   } else {
-    //     if (majTopFirstHit) {
-    //       // If hits top and continues to press, and first hit, sets to repeat. Idle.
-    //       majorElevator.set(0.1);
-    //       majTopFirstHit = false;
-    //     }
-    //   }
-    // } else if (stick.getRawButton(RobotMap.joyMajorElevatorDown)) {
-    //   // Result is not inverted, due to connection to NC and Ground on limit switch.
-    //   if (majElevatorDownSwitch.get()) {
-    //     majorElevator.set(-1);
-    //   } else {
-    //     majorElevator.set(0.1);
-    //   }
-    // } else {
-    //   majorElevator.set(0.1);
-    //   // Passive Lifting to prevent. Reuires Calibration
-    // }
+    if (stick.getRawButton(RobotMap.joyMajorElevatorUp)) {
+      System.out.println("going up");
+      majTopFirstHit = true;
+      // Result is inverted, due to connection to NO and Ground on the limit switch.
+      if (!majElevatorTopSwitch.get()) {
+        if (majTopFirstHit) {
+          // If it is before the first hit, it will go up at a faster rate.
+          majorElevator.set(1);
+        } else {
+          // If repeated hit, but under same click, goes up slower.
+          majorElevator.set(0.2);
+        }
+      } else {
+        if (majTopFirstHit) {
+          // If hits top and continues to press, and first hit, sets to repeat. Idle.
+          majorElevator.set(0.1);
+          majTopFirstHit = false;
+        }
+      }
+    } else if (stick.getRawButton(RobotMap.joyMajorElevatorDown)) {
+      // Result is not inverted, due to connection to NC and Ground on limit switch.
+      if (majElevatorDownSwitch.get()) {
+        majorElevator.set(-1);
+      } else {
+        majorElevator.set(0.1);
+      }
+    } else {
+      majorElevator.set(0.1);
+      // Passive Lifting to prevent. Reuires Calibration
+    }
 
-    // if (stick.getPOV() != 0 && stick.getPOV() != 180) { // If no POV overrides given.
-    //   if (stick.getRawButton(RobotMap.joyMinorElevatorUp)) {
-    //     minTopFirstHit = true;
-    //     // Check limit switch condition. Connect to NO and Ground for inverse.
-    //     // if (!minElevatorTopSwitch.get()) {
-    //       // if (minTopFirstHit) {
-    //         // If it is before the first hit, it will go up at a faster rate.
-    //         minorElevator.set(1);
-    //       // } else {
-    //       //   // If repeated hit, but under same click, goes up slower.
-    //       //   minorElevator.set(0.2);
-    //       // }
-    //     // } else {
-    //       // if (minTopFirstHit) {
-    //       //   // If hits top and continues to press, and first hit, sets to repeat. Idle.
-    //       //   minorElevator.set(0);
-    //       //   minTopFirstHit = false;
-    //       // }
-    //     //}
-    //   } else if (stick.getRawButton(RobotMap.joyMinorElevatorDown)) {
-    //     // Check connection. If NO and Ground should be inverse
-    //     // if (!minElevatorDownSwitch.get()) {
-    //       minorElevator.set(-1);
-    //     // } else {
-    //     //   minorElevator.set(0);
-    //     // }
-    //   } else {
-    //     minorElevator.set(0);
-    //     // Passive Lifting to prevent. Reuires Calibration
-    //   }
-    // } else if (stick.getPOV() == 0) {
-    //   // If 0, grabber manually moves tiny bit upwards.
-    //   minorElevator.set(0.1);
-    // } else if (stick.getPOV() == 180) {
-    //   // If 180, grabber manually move tiny bit down.
-    //   minorElevator.set(-0.1);
-    // }
+    if (stick.getPOV() != 0 && stick.getPOV() != 180) { // If no POV overrides given.
+      if (stick.getRawButton(RobotMap.joyMinorElevatorUp)) {
+        minTopFirstHit = true;
+        // Check limit switch condition. Connect to NO and Ground for inverse.
+        // if (!minElevatorTopSwitch.get()) {
+          // if (minTopFirstHit) {
+            // If it is before the first hit, it will go up at a faster rate.
+            minorElevator.set(1);
+          // } else {
+          //   // If repeated hit, but under same click, goes up slower.
+          //   minorElevator.set(0.2);
+          // }
+        // } else {
+          // if (minTopFirstHit) {
+          //   // If hits top and continues to press, and first hit, sets to repeat. Idle.
+          //   minorElevator.set(0);
+          //   minTopFirstHit = false;
+          // }
+        //}
+      } else if (stick.getRawButton(RobotMap.joyMinorElevatorDown)) {
+        // Check connection. If NO and Ground should be inverse
+        // if (!minElevatorDownSwitch.get()) {
+          minorElevator.set(-1);
+        // } else {
+        //   minorElevator.set(0);
+        // }
+      } else {
+        minorElevator.set(0);
+        // Passive Lifting to prevent. Reuires Calibration
+      }
+    } else if (stick.getPOV() == 0) {
+      // If 0, grabber manually moves tiny bit upwards.
+      minorElevator.set(0.1);
+    } else if (stick.getPOV() == 180) {
+      // If 180, grabber manually move tiny bit down.
+      minorElevator.set(-0.1);
+    }
 
-    // if (stick.getRawButton(RobotMap.joyShoot)) {
-    //   mainGrabber.set(0.7);
-    // } else if (stick.getRawButton(RobotMap.joySucc)) {
-    //   mainGrabber.set(-0.3); // Adjust positive / negative until matches
-    // } else {
-    //   mainGrabber.set(0);
-    // }
+    if (stick.getRawButton(RobotMap.joyShoot)) {
+      mainGrabber.set(1);
+    } else if (stick.getRawButton(RobotMap.joySucc)) {
+      mainGrabber.set(-0.3); // Adjust positive / negative until matches
+    } else {
+      mainGrabber.set(0);
+    }
 
-    // switch (majorElevatorMode) {
-    // case "idle":
-    //   majorElevator.set(1);
-    // case "topFirstHit":
-    //   majorElevator.set(1);
-    // case "topRepeatedHit":
-    //   majorElevator.set(0.5);
-    // case "reachBottom":
-    //   majorElevator.set(-1);
-    // case "default":
-    //   majorElevator.set(0);
-    // }
+    switch (majorElevatorMode) {
+    case "idle":
+      majorElevator.set(1);
+    case "topFirstHit":
+      majorElevator.set(1);
+    case "topRepeatedHit":
+      majorElevator.set(0.5);
+    case "reachBottom":
+      majorElevator.set(-1);
+    case "default":
+      majorElevator.set(0);
+    }
 
-    // switch (minorElevatorMode) {
-    // case "idle":
-    //   minorElevator.set(0);
-    // case "topFirstHit":
-    //   minorElevator.set(1);
-    // case "topRepeatedHit":
-    //   minorElevator.set(0.5);
-    // case "reachBottom":
-    //   minorElevator.set(-1);
-    // case "manualUp":
-    //   minorElevator.set(0.4);
-    // case "manualDown":
-    //   minorElevator.set(-0.1);
-    // case "default":
-    //   minorElevator.set(0);
-    // }
-    //System.out.println(majElevatorTopSwitch.get());
+    switch (minorElevatorMode) {
+    case "idle":
+      minorElevator.set(0);
+    case "topFirstHit":
+      minorElevator.set(1);
+    case "topRepeatedHit":
+      minorElevator.set(0.5);
+    case "reachBottom":
+      minorElevator.set(-1);
+    case "manualUp":
+      minorElevator.set(0.4);
+    case "manualDown":
+      minorElevator.set(-0.1);
+    case "default":
+      minorElevator.set(0);
+    }
+    System.out.println(majElevatorTopSwitch.get());
   }
 
 }
